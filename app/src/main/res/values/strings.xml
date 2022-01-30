@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Scope</string>
+    <string name="myscope">MyScope</string>
+    <string name="analogwave">AnalogWave</string>
+    <string name="connect">Connect</string>
+    <string name="time">Time</string>
+    <string name="bt_devices">BT Devices</string>
+</resources>
