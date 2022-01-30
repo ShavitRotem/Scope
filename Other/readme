@@ -1,1 +1,2 @@
 The Arduino file bt_test.ino - send simple text over BT. Created for debbuging. The final code will be based on this shield
+The Arduino file BT_and_ADC.ino - Sense voltage on PB4 pin (physical pin 3) and transmit it to BT module by Serial (RX - PB1 (phy6), TX - PB0(phy5))
