@@ -40,12 +40,10 @@ void loop() {
   while (ADCSRA & (1 << ADSC) ); // wait till conversion complete
 
   voltage = (float(ADCH) / 255.0) * 3.3; // Based on 3.3V VCC
-  
-  blueToothSerial.print("Cur voltage is: ");
-  blueToothSerial.print(voltage);
-  blueToothSerial.println("V");
+ 
+  blueToothSerial.println(voltage);
 
-  delay(200);
+  delay(20);
 }
 
 void setupBlueToothConnection()
