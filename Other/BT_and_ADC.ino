@@ -4,7 +4,11 @@
 
 SoftwareSerial blueToothSerial(RxD,TxD);
 float voltage;
+int cur_status = 0; //0 - Normal read voltage
+                    //1- Stop read
+                    //2 - display on i2c screen
 
+char recvChar = '0'; // char from phone
 
 void initADC()
 {
@@ -36,13 +40,46 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  ADCSRA |= (1 << ADSC);         // start ADC measurement
-  while (ADCSRA & (1 << ADSC) ); // wait till conversion complete
+  recvChar = char(blueToothSerial.read());
+//  blueToothSerial.print("read is: ");
+//  blueToothSerial.println(recvChar);
 
-  voltage = (float(ADCH) / 255.0) * 3.3; // Based on 3.3V VCC
- 
-  blueToothSerial.println(voltage);
+  if(recvChar == '0')
+  {
+    cur_status = 0;
+  }
+  else if(recvChar == '1')
+  {
+    cur_status = 1;
+  }
+  
+  else if(recvChar == '2')
+  {
+    cur_status = 2;
+  }
+  // Add condition for unkown command - what is the idle value of read()?
 
+  if(cur_status == 0)
+  {
+    ADCSRA |= (1 << ADSC);         // start ADC measurement
+    while (ADCSRA & (1 << ADSC) ); // wait till conversion complete
+  
+    voltage = (float(ADCH) / 255.0) * 3.3; // Based on 3.3V VCC
+   
+    blueToothSerial.println(voltage);
+  }
+  else if(cur_status == 1)
+  {
+    blueToothSerial.println("Stopped, send 0 to continue");
+  }
+    else if(cur_status == 2)
+  {
+    // send some msg to isc oled screen
+  }
+      else if(recvChar == -1)
+  {
+    blueToothSerial.println("SHIT");
+  }
   delay(20);
 }
 
